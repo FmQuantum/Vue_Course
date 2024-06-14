@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Basics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/vue@3.4.9/dist/vue.global.js" defer></script> 
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Vue Course Goals</h1>
+    </header>
+    <section id="user-goals">
+      <h2>My course goals</h2>
+      <input type="text" v-model="enteredGoalValue" />
+      <button @click="addGoal">Add Goal</button>
+      <p v-if="goals.length === 0">No goals have been added yet - please start adding some!</p>
+      <ul v-else>
+        <!-- <li v-for="goal in goals" :key="goal.id">
+          {{ goal.text }}
+          <button @click="logGoal(goal.id)">Log Goal</button>
+        </li> -->
+        <li v-for="(goal, index) in goals" :key="goal.id" @click="removeGoal(index)">
+          <p>{{ goal.text }} - {{ index }}</p>
+          <!-- .stop is an event modifier that stop the button to remove the item when cliccked -->
+          <!-- 
+            .stop: Prevents event propagation.
+            .prevent: Prevents the default behavior.
+            .capture: Attaches the event listener in capture mode.
+            .self: Triggers the handler only if the event was fired from the element itself.
+            .once: Ensures the handler is triggered at most once.
+            .passive: Indicates the handler will never call event.preventDefault(), improving performance.
+            Combining them:  <button @click.stop.prevent="handleClick">Click me</button>
+          -->
+          <!-- <button @click.stop="logGoal(goal.id)">Log Goal</button> -->
+          <input type="text"@click.stop>
+        </li>
+      </ul>
+    </section>
+  </body>
+</html>
+

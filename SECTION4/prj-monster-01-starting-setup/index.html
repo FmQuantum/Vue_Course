@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Basics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/vue@3.4.9/dist/vue.global.js" defer></script> 
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Monster Slayer</h1>
+    </header>
+    <div id="game" class="container" style="margin: 25px;">
+      <section id="log" class="container" style="margin-left: 15px;">
+        <h2>Battle Log</h2>
+        <ul>
+          <!-- <li v-for="logMsg in logMessages">{{ logMsg.actionBy }} - {{ logMsg.actionType }} - {{ logMsg.actionValue }}</li> -->
+          <li v-for="logMsg in logMessages">
+            <span :class="{'log--player': logMsg.actionBy === 'player', 'log--monster': logMsg.actionBy === 'monster'}">{{ logMsg.actionBy === 'player' ? 'Player' : 'Monster' }}</span>
+            <span v-if="logMsg.actionType === 'heal'"> heals theirself for <span class="log--heal">{{logMsg.actionValue}}</span></span>
+            <span v-else-if="logMsg.actionType === 'attack'"> has launched an attack for <span class="log--damage">{{logMsg.actionValue}}</span></span>
+            <span v-else-if="logMsg.actionType === 'special-attack'"> has launched a special attack for <span class="log--damage">{{logMsg.actionValue}}</span></span>
+            <span v-else> has surrendered! <span>{{logMsg.actionValue}}</span></span>
+          </li>
+        </ul>
+      </section>
+      <section id="gameCMD" class="container" style="margin-right: 15px;">
+        <section id="monster" class="container">
+          <h2>Monster Health</h2>
+          <div class="healthbar">
+            <div class="healthbar__value" :style="monsterBarStyle"></div>
+          </div>
+        </section>
+        <section id="player" class="container">
+          <h2>Your Health</h2>
+          <div class="healthbar">
+            <div class="healthbar__value" :style="playerBarStyle"></div>
+          </div>
+        </section>
+        <section v-if="winner" id="messages" class="container">
+          <h2>Game Over!</h2>
+          <h3 v-if="winner === 'draw'">It's a draw!</h3>
+          <h3 v-else-if="winner === 'monster'">You LOST!</h3>
+          <h3 v-else="winner === 'player'">YOU WON!</h3>
+          <button @click="startGame">Start New Game</button>
+        </section>
+        <section v-else id="controls">
+          <button @click="attachMonster">ATTACK</button>
+          <button :disabled="shouldDisableSuperAttack" @click="specialAttachMonster">SPECIAL ATTACK</button>
+          <button :disabled="healShots" @click="healPlayer">HEAL</button>
+          <button @click="surrender">SURRENDER</button>
+        </section>
+      </section>
+    </div>
+  </body>
+</html>
